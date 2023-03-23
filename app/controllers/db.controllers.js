@@ -17,21 +17,40 @@ exports.create = async (req, res) => {
           err.message || "Some error occurred while creating the column.",
       });
     });
+
+  // Board.count().then(console.log);
 };
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-  Board.findAll()
-    .then((user) => res.send(user))
+  // Board.findAll()
+  //   .then((user) => res.send(user))
+  //   .catch((err) =>
+  //     res
+  //       .status(500)
+  //       .send({ message: err.message | "some error occurred while processing" })
+  //   );
+  const skip = 5 * req.query.start;
+
+  // Board.findAll({ offset: skip, limit: 5 })
+  //   .then((user) => res.send(user))
+  //   .catch((err) =>
+  //     res
+  //       .status(500)
+  //       .send({ message: err.message | "some error occurred while processing" })
+  // );
+
+  Promise.all([Board.findAll({ offset: skip, limit: 5 }), Board.count()])
+    .then((values) => res.send(values))
     .catch((err) =>
-      res
-        .status(500)
-        .send({ message: err.message | "some error occurred while processing" })
+      res.status(500).send({
+        message: err.message | "some error occurred while processing",
+      })
     );
 };
 
 // Find a single Tutorial with an id
-exports.findOne = (req, res) => {};
+exports.findByLimit = (req, res) => {};
 
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {};

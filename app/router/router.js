@@ -8,6 +8,8 @@ module.exports = (app) => {
   // Retrieve all parts
   router.get("/", parts.findAll);
 
+  router.get("/findby", parts.findByLimit);
+
   // // Retrieve all published parts
   // router.get("/published", parts.findAllPublished);
 
